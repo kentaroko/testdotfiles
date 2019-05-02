@@ -8,8 +8,6 @@ export ZSH=$HOME/.oh-my-zsh
 
 ZSH_THEME="agnoster"
 
-export NVM_DIR="$HOME/.nvm"
-
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
 # HYPHEN_INSENSITIVE="true"
@@ -86,12 +84,9 @@ alias zst="zeus start"
 alias zs="zeus s"
 alias zc="zeus c"
 alias zt="zeus test"
-alias sshrg1="ssh -t 1_rg_staging 'cd /var/www/nginx-default/current;bash'"
-alias sshrg2="ssh -t 2_abandon 'cd /var/www/nginx-default/current;bash'"
 
 alias gcoall="gco -- ."
 alias gcos="gco --"
-alias gpfl="git push --force-with-lease origin $(current_branch)"
 
 alias bi="bundle install"
 
@@ -103,7 +98,7 @@ alias HG="history | grep"
 gpull-rebase() {
   local branch
   branch=$(git rev-parse --abbrev-ref HEAD)
-  git checkout $(echo "$1") && git pull && git checkout $(echo "$branch") && git rebase $(echo "$1")
+  git checkout $(echo "$1") && git pull --rebase && git checkout $(echo "$branch") && git rebase $(echo "$1")
 }
 export PATH="/usr/local/opt/node@8/bin:$PATH"
 
@@ -120,3 +115,12 @@ KEYTIMEOUT=1
 export PATH="/usr/local/opt/mysql@5.6/bin:$PATH"
 
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+alias config='/usr/bin/git --git-dir=$HOME/.myconf/ --work-tree=$HOME'
+
+export EDITOR=vim
+
+[[ -s $HOME/.nvm/nvm.sh ]] && . $HOME/.nvm/nvm.sh
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"

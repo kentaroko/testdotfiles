@@ -3,6 +3,14 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 set re=1
 
+if has("autocmd")
+  " Restore cursor position
+  autocmd BufReadPost *
+        \ if line("'\"") > 1 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ endif
+endif
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 
@@ -58,9 +66,16 @@ Plugin 'nelstrom/vim-textobj-rubyblock'
 Plugin 'thoughtbot/vim-rspec'
 
 Plugin 'google/vim-searchindex'
-Plugin 't9md/vim-choosewin'
+" Plugin 't9md/vim-choosewin'
 
 Plugin 'machakann/vim-highlightedyank'
+
+Plugin 'scrooloose/vim-slumlord'
+Plugin 'aklt/plantuml-syntax'
+
+" For React syntax highlight
+Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
 
 " Plugin 'mhinz/vim-startify'
 call vundle#end()            " required
@@ -224,8 +239,9 @@ let g:fzf_colors =
   \ 'header':  ['fg', 'Comment'] }
 
 " bind K to grep word under cursor
-" nnoremap K :Ag<CR>"\b<C-R><C-W>\b"
-nmap K :call fzf#vim#grep('ag --nogroup --column --color ^', 1)<cr>
+nnoremap K :Rg<CR>"\b<C-R><C-W>\b"
+" nmap K :call fzf#vim#grep('ag --nogroup --column --color ^', 1)<cr>
+" binding.pry
 " nnoremap <C-p> :call fzf#vim#files('', fzf#vim#with_preview('right'))<cr>
 nnoremap <Leader>f :FZF!<CR>
 
@@ -236,13 +252,14 @@ nnoremap <C-p> :bprevious<CR>
 " For quicker quit and save
 map <Leader>z ZZ
 map <Leader>x ZQ
-map <Leader>w :w<CR>
+nmap <Leader>w :w<CR>
 
 " For tab
 nmap <Leader><c-t> <esc>:tabnew<CR>
 map <Leader>ct :tabclose<CR>
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tagbar#enabled = 0
 
 let g:airline#extensions#tabline#show_tab_nr = 1
@@ -254,8 +271,8 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 " For VundleInstall
 map <Leader>pi :PluginInstall<CR>
 
-map <Leader><Leader>b obyebug<esc>:w<CR>
-" map <Leader><Leader>b obinding.pry<esc>:w<CR>
+" map <Leader><Leader>b obyebug<esc>:w<CR>
+map <Leader><Leader>b obinding.pry<esc>:w<CR>
 
 " For pwd to clipboard
 nnoremap <Leader>pcb :let @+=expand('%:p')<CR>
@@ -292,6 +309,8 @@ map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 
+" For large dispatch quickwindow
+let g:dispatch_quickfix_height = 30
 
 " paste only register
 map <Leader>pr "0p
@@ -306,7 +325,9 @@ map <Leader>qvr2 :copen<CR>:vertical resize + 20
 map <Leader>vw :vertical resize +20<CR>
 map <Leader>rw :resize +20<CR>
 
-noremap <Leader>y "+
+" Easier system copy/paste
+noremap <Leader>y "+y
+noremap <Leader><c-v> "+p
 
 set tags=./tags,tags;$HOME
 
@@ -355,6 +376,8 @@ map <C-J> <Plug>snipMateNextOrTrigger
 let g:EasyMotion_smartcase = 1
 " nmap <leader><leader>s <Plug>(easymotion-overwin-f)
 nmap <leader><leader>a <Plug>(easymotion-overwin-f2)
+nmap <leader>e <Plug>(easymotion-w)
+nmap <leader><c-e> <Plug>(easymotion-b)
 " nmap <leader><leader>la <Plug>(easymotion-overwin-line)
 " nmap <Leader><leader>wa <Plug>(easymotion-overwin-w)
 
@@ -362,5 +385,11 @@ nmap <leader><leader>a <Plug>(easymotion-overwin-f2)
 let g:NERDTreeNodeDelimiter = "\u00a0"
 
 " For vimrc edition
-map <Leader><c-v> :e $MYVIMRC<CR>
-nmap <leader><c-r> :so $MYVIMRC<cr>
+map <Leader><c-m> :e $MYVIMRC<CR>
+nmap <Leader><c-r> :so $MYVIMRC<cr>
+
+" For close current buffer and move to previous without lose split window
+nnoremap <Leader>bd :bp\|bd #<CR>
+
+" Select whole file
+map <leader><C-a> <esc>ggVG<CR>
