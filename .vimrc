@@ -393,3 +393,9 @@ nnoremap <Leader>bd :bp\|bd #<CR>
 
 " Select whole file
 map <leader><C-a> <esc>ggVG<CR>
+
+" abbreviation for react
+
+iabbrev mstp const mapStateToProps = state =>
+iabbrev mdtp const mapDispatchToProps = dispatch =>
+iabbrev csl console.log
