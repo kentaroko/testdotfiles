@@ -20,7 +20,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-dispatch'
-Plugin 'tpope/vim-endwise'
+" Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'vim-scripts/tComment'
 Plugin 'scrooloose/nerdcommenter'
@@ -76,6 +76,8 @@ Plugin 'aklt/plantuml-syntax'
 " For React syntax highlight
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+
+Plugin 'fatih/vim-go'
 
 " Plugin 'mhinz/vim-startify'
 call vundle#end()            " required
@@ -199,9 +201,12 @@ setglobal complete-=i
 " Always use vertical diffs
 set diffopt+=vertical
 
+" set t_Co=256
+colorscheme gruvbox
 " Highlight current line
 au WinLeave * set nocursorline nocursorcolumn
 au WinEnter * set cursorline cursorcolumn
+" hi CursorColumn cterm=none ctermbg=DarkMagenta ctermfg=White
 set cursorline cursorcolumn
 
 " ctrap
@@ -239,7 +244,6 @@ let g:fzf_colors =
   \ 'header':  ['fg', 'Comment'] }
 
 " bind K to grep word under cursor
-nnoremap K :Rg<CR>"\b<C-R><C-W>\b"
 " nmap K :call fzf#vim#grep('ag --nogroup --column --color ^', 1)<cr>
 " binding.pry
 " nnoremap <C-p> :call fzf#vim#files('', fzf#vim#with_preview('right'))<cr>
@@ -294,7 +298,6 @@ nmap <F5> :NERDTreeToggle<cr>
 " highlight NonText guibg=#060606
 " highlight Folded  guibg=#0A0A0A guifg=#9090D0
 " colorscheme kemonofriends
-colorscheme gruvbox
 set background=dark
 
 " status bar
@@ -393,9 +396,35 @@ nnoremap <Leader>bd :bp\|bd #<CR>
 
 " Select whole file
 map <leader><C-a> <esc>ggVG<CR>
+map <leader><C-g> :Ge :<CR>
 
 " abbreviation for react
 
 iabbrev mstp const mapStateToProps = state =>
 iabbrev mdtp const mapDispatchToProps = dispatch =>
 iabbrev csl console.log
+
+" function! Contentrg(...)
+"   let l:output = system("rg --vimgrep ".join(a:000, " "))
+"   let l:list = split(l:output, "\n")
+"   let l:ql = []
+"   for l:item in l:list
+"     let sit = split(l:item, ":")
+"     call add(l:ql,
+"           \ {"filename": sit[0], "lnum": sit[1], "col": sit[2], "text": sit[3]})
+"   endfor
+"   call setqflist(l:ql, 'r')
+"   echo 'Rg results: '.len(l:ql)
+" endfunction
+" command! -nargs=* Contentrg call Rg(<q-args>)
+
+" nnoremap K :Contentrg
+" command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>), 1, { 'options': '--delimiter : --nth 4..' }, <bang>0)
+" command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --follow --glob "!.git/*" --color "never" '.shellescape(<q-args>), 1, { 'options': '--delimiter : --nth 4..' }, <bang>0)
+
+map <leader><C-f> :Rg<CR>
+
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
+
+nnoremap K :Rg <C-R><C-W><CR>

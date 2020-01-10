@@ -5,6 +5,8 @@ DEFAULT_USER='ken'
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
+export GOPATH=$HOME/go
+export PATH="$GOPATH/bin:$PATH"
 
 ZSH_THEME="agnoster"
 
@@ -47,7 +49,7 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git osx rake rails rvm vi-mode)
+plugins=(git osx rake rails rvm vi-mode autojump)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -79,11 +81,6 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-alias zst="zeus start"
-alias zs="zeus s"
-alias zc="zeus c"
-alias zt="zeus test"
 
 alias gcoall="gco -- ."
 alias gcos="gco --"
@@ -126,3 +123,6 @@ export EDITOR=vim
 export PATH="$PATH:$HOME/.rvm/bin"
 
 export PATH=$PATH:/usr/local/go/bin
+export PATH="/usr/local/opt/postgresql@9.4/bin:$PATH"
+export PATH="$HOME/.jenv/bin:$PATH"
+eval "$(jenv init -)"
